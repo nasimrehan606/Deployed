@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Futures · 30‑day course for students</title>
+  <!-- Fonts & Icons (no Tailwind – pure CSS) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ===== RESET & BASE ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f4f7fc;
+      line-height: 1.5;
+      color: #1b1f3b;
+      scroll-behavior: smooth;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    section {
+      padding: 80px 0;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      background: linear-gradient(145deg, #1e2b5e, #3a0ca3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    h3 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    /* ===== CARDS & BUTTONS ===== */
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(4px);
+      border-radius: 28px;
+      padding: 28px 24px;
+      box-shadow: 0 20px 35px -10px rgba(0, 20, 60, 0.2), 0 2px 8px -4px rgba(0, 10, 30, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 30px 45px -12px rgba(58, 12, 163, 0.3);
+    }
+
+    .btn {
+      display: inline-block;
+      background: #3a0ca3;
+      color: white;
+      font-weight: 600;
+      padding: 14px 38px;
+      border-radius: 60px;
+      text-decoration: none;
+      font-size: 1.2rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 10px 20px -8px #3a0ca380;
+      border: 1px solid rgba(255,255,255,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      background: rgba(255,255,255,0.5);
+      opacity: 0;
+      border-radius: 100%;
+      transform: scale(1, 1) translate(-50%, -50%);
+      transform-origin: 50% 50%;
+    }
+    .btn:focus:not(:active)::after {
+      animation: ripple 0.8s ease-out;
+    }
+    @keyframes ripple {
+      0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(40, 40);
+        opacity: 0;
+      }
+    }
+    .btn:hover {
+      background: #4cc9f0;
+      color: #0b0b2b;
+      transform: scale(1.05) translateY(-3px);
+      box-shadow: 0 25px 30px -8px #4cc9f0cc;
+      border-color: #ffffff90;
+    }
+    .btn:active {
+      transform: scale(0.98) translateY(0);
+    }
+
+    /* hero section */
+    .hero-bg {
+      background: linear-gradient(145deg, #150545, #2a0c5c, #1f3a8f);
+      position: relative;
+      isolation: isolate;
+      padding: 60px 0 80px;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.15"><path d="M50 50 L150 50 M100 20 L100 180 M30 100 L170 100 M70 30 L130 170 M130 30 L70 170" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" /><circle cx="100" cy="100" r="18" stroke="white" fill="none" stroke-width="1.2"/><circle cx="100" cy="100" r="30" stroke="white" fill="none" stroke-width="0.8"/></svg>');
+      background-size: 300px 300px;
+      background-position: 20% 30%;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 70% 40%, #b983ff30 0%, transparent 40%),
+                  radial-gradient(circle at 20% 80%, #4cc9f030 0%, transparent 45%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .hero-bg .container {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      color: white;
+    }
+    .hero-title {
+      font-size: 3.2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      text-shadow: 0 4px 20px #00000040;
+    }
+    .hero-subtitle {
+      font-size: 1.5rem;
+      margin: 20px 0 10px;
+      opacity: 0.9;
+    }
+    .hero-cta {
+      background: #4cc9f0;
+      color: #0b0b2b;
+      border: none;
+      font-size: 1.4rem;
+      padding: 16px 50px;
+      margin-top: 10px;
+    }
+    /* AI illustration */
+    .ai-illustration {
+      font-size: 5rem;
+      color: rgba(255,255,255,0.9);
+      filter: drop-shadow(0 0 20px #b77dff) drop-shadow(0 0 40px #4895ef);
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+      background: rgba(0,0,0,0.2);
+      padding: 2rem 2rem 1.5rem;
+      border-radius: 80px;
+      backdrop-filter: blur(8px);
+      border: 1px solid #ffffff30;
+    }
+    .ai-illustration i {
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 0 5px cyan);
+    }
+    .ai-illustration i:nth-child(2) { animation: float 4s infinite; }
+    .ai-illustration i:nth-child(3) { animation: float 5s infinite reverse; }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+      100% { transform: translateY(0px); }
+    }
+
+    /* grids */
+    .grid-3, .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    .benefit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    .icon-big {
+      font-size: 2.2rem;
+      color: #3a0ca3;
+      margin-bottom: 20px;
+    }
+
+    /* stars */
+    .stars {
+      color: #f9c74f;
+      font-size: 1rem;
+      margin: 8px 0;
+      letter-spacing: 3px;
+    }
+
+    /* pricing */
+    .pricing-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 40px;
+    }
+    .pricing-card {
+      flex: 1 1 280px;
+      max-width: 350px;
+      background: white;
+      border-radius: 32px;
+      padding: 32px 24px;
+      box-shadow: 0 20px 35px -10px #0b1b4b40;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid #ffffff90;
+      position: relative;
+    }
+    .pricing-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 30px 45px -10px #3a0ca370;
+    }
+    .pricing-card.popular {
+      border: 2px solid #4cc9f0;
+      background: white;
+    }
+    .popular-badge {
+      position: absolute;
+      top: -15px;
+      left: 30px;
+      background: #4cc9f0;
+      color: #0b0f28;
+      font-weight: 700;
+      padding: 6px 18px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      box-shadow: 0 8px 12px -6px #4cc9f0b0;
+    }
+    .price {
+      font-size: 3rem;
+      font-weight: 800;
+      margin: 20px 0;
+    }
+    .price small {
+      font-size: 1rem;
+      font-weight: 400;
+      color: #5b5d7a;
+    }
+    .pricing-btn {
+      width: 100%;
+      text-align: center;
+    }
+
+    /* footer */
+    .footer {
+      background: #0f0f1f;
+      color: #cdd1ff;
+      padding: 50px 0 30px;
+      border-radius: 40px 40px 0 0;
+    }
+    .footer a {
+      color: #b3b9ff;
+      text-decoration: none;
+    }
+    .footer-nav {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+    .social-icons {
+      display: flex;
+      gap: 25px;
+      font-size: 1.6rem;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .social-icons a:hover {
+      color: #4cc9f0;
+    }
+
+    .highlight {
+      background: linear-gradient(135deg, #560bad, #3f37c9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 800;
+    }
+
+    .bullet-card {
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(6px);
+      border-radius: 28px;
+      padding: 30px 20px;
+      box-shadow: 0 20px 30px -12px #2f278d30;
+      border: 1px solid #ffffff80;
+      transition: all 0.2s;
+    }
+    .bullet-card:hover {
+      background: white;
+      transform: scale(1.02);
+    }
+
+    /* guarantee section */
+    .guarantee-card {
+      background: #ffffffd9;
+      backdrop-filter: blur(8px);
+      border-radius: 40px;
+      padding: 40px 32px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      box-shadow: 0 25px 40px -18px #1f1f5e;
+      border: 1px solid #f0f3ff;
+    }
+    .guarantee-icon {
+      font-size: 4.5rem;
+      color: #f72585;
+      filter: drop-shadow(0 8px 12px #f7258560);
+    }
+    .guarantee-text h3 {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      background: linear-gradient(145deg, #2b0a5e, #b5179e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .guarantee-text p {
+      font-size: 1.2rem;
+      color: #2b2d42;
+    }
+
+    /* countdown */
+    .countdown-badge {
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 100px;
+      padding: 16px 32px;
+      display: inline-flex;
+      align-items: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+      border: 1px solid rgba(255,255,255,0.5);
+      margin: 30px 0 10px;
+    }
+    .countdown-item {
+      text-align: center;
+    }
+    .countdown-num {
+      font-size: 2.6rem;
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, #f8f9ff, #e0c9ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .countdown-label {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #cdc9ff;
+    }
+
+    /* modal (accessible) */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(10, 5, 30, 0.7);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+    .modal.show {
+      display: flex;
+    }
+    .modal-content {
+      background: white;
+      max-width: 420px;
+      width: 90%;
+      border-radius: 48px;
+      padding: 40px 32px;
+      box-shadow: 0 40px 60px -20px #00000060;
+      position: relative;
+      animation: modalFadeIn 0.3s;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .close-modal {
+      position: absolute;
+      top: 20px; right: 24px;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #5b5d7a;
+      background: none;
+      border: none;
+    }
+    .close-modal:hover { color: #1b1f3b; }
+    .tab-buttons {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 32px;
+      role: "tablist";
+    }
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      font-weight: 600;
+      padding: 8px 0;
+      border-bottom: 3px solid #ccc;
+      cursor: pointer;
+      color: #5b5d7a;
+      transition: 0.2s;
+    }
+    .tab-btn.active {
+      border-bottom-color: #3a0ca3;
+      color: #1b1f3b;
+    }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+    .input-group { margin-bottom: 24px; }
+    .input-group label {
+      font-weight: 500;
+      display: block;
+      margin-bottom: 6px;
+      color: #2d3142;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1.5px solid #dde0ed;
+      border-radius: 60px;
+      font-size: 1rem;
+      transition: 0.2s;
+    }
+    .input-group input:focus {
+      border-color: #4cc9f0;
+      outline: none;
+      box-shadow: 0 0 0 3px #4cc9f030;
+    }
+    .modal-btn {
+      width: 100%;
+      background: #3a0ca3;
+      border: none;
+      color: white;
+      padding: 16px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .modal-btn:hover { background: #4cc9f0; color: #0b0b2b; }
+    .switch-text {
+      margin-top: 24px;
+      text-align: center;
+      color: #5b5d7a;
+    }
+    .switch-text span {
+      color: #3a0ca3;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* focus visible for accessibility */
+    :focus-visible {
+      outline: 3px solid #4cc9f0;
+      outline-offset: 2px;
+    }
+
+    /* responsive */
+    @media (max-width: 600px) {
+      h2 { font-size: 2rem; }
+      .hero-title { font-size: 2.4rem; }
+      .hero-subtitle { font-size: 1.2rem; }
+      .container { padding: 0 20px; }
+      section { padding: 60px 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO SECTION -->
+  <section id="hero" class="hero-bg">
+    <div class="container">
+      <h1 class="hero-title">Learn AI Skills <br>in Just 30 Days</h1>
+      <p class="hero-subtitle">No coding experience needed. Perfect for students.</p>
+
+      <!-- countdown with real cohort date -->
+      <div class="countdown-badge" aria-label="Countdown to next cohort start">
+        <div class="countdown-item">
+          <span class="countdown-num" id="days">00</span>
+          <div class="countdown-label">Days</div>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-num" id="hours">00</span>
+          <div class="countdown-label">Hours</div>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-num" id="minutes">00</span>
+          <div class="countdown-label">Mins</div>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-num" id="seconds">00</span>
+          <div class="countdown-label">Secs</div>
+        </div>
+        <span style="font-weight: 600; background: #4cc9f0; color:#0b0b2b; padding:8px 24px; border-radius:60px;">Cohort starts March 15</span>
+      </div>
+
+      <a href="#" class="btn hero-cta modal-trigger" aria-label="Reserve your seat now">Reserve My Seat</a>
+
+      <div class="ai-illustration" aria-hidden="true">
+        <i class="fas fa-user-graduate"></i>
+        <i class="fas fa-laptop"></i>
+        <i class="fas fa-circle-nodes"></i>
+        <i class="fas fa-microchip"></i>
+        <i class="fas fa-brain"></i>
+        <i class="fas fa-wave-square"></i>
+      </div>
+      <div style="margin-top: -20px; filter: blur(30px); opacity: 0.4; background: radial-gradient(circle, #b48aff, transparent 70%); height: 100px; width: 80%; margin-left: auto; margin-right: auto;" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- PROBLEM SECTION -->
+  <section id="problem" style="background: #ffffff10; backdrop-filter: blur(2px);">
+    <div class="container">
+      <h2 style="text-align: center;">Struggling to Understand AI?</h2>
+      <p style="text-align: center; font-size: 1.3rem; max-width: 650px; margin: 0 auto 30px; color: #2d3142;">Are you confused about AI? Watching random tutorials but not learning properly?</p>
+      <div class="grid-3">
+        <div class="bullet-card">
+          <div class="icon-big"><i class="fas fa-route"></i></div>
+          <h3 style="font-size: 1.7rem;">No clear roadmap</h3>
+          <p style="color: #2f2e41;">Endless topics, no step‑by‑step path.</p>
+        </div>
+        <div class="bullet-card">
+          <div class="icon-big"><i class="fas fa-book-open"></i></div>
+          <h3 style="font-size: 1.7rem;">Too much theory</h3>
+          <p>Math heavy, no practical feel.</p>
+        </div>
+        <div class="bullet-card">
+          <div class="icon-big"><i class="fas fa-laptop-code"></i></div>
+          <h3 style="font-size: 1.7rem;">No real projects</h3>
+          <p>Can’t build anything portfolio‑worthy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUTION SECTION -->
+  <section id="solution" style="background: #f1f4ff;">
+    <div class="container">
+      <h2 style="text-align: center;">Here’s How We Fix That</h2>
+      <div class="grid-4">
+        <div class="card">
+          <i class="fas fa-list-check icon-big"></i>
+          <h3>30 structured lessons</h3>
+          <p>Bite-sized, one each day.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-robot icon-big"></i>
+          <h3>Hands-on projects</h3>
+          <p>Build a chatbot, image classifier & more.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-child icon-big"></i>
+          <h3>Beginner-friendly</h3>
+          <p>Zero code required to start.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-certificate icon-big"></i>
+          <h3>Certificate included</h3>
+          <p>Showcase your AI readiness.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS SECTION -->
+  <section id="benefits" style="background: linear-gradient(120deg, #ede7ff, #ffffff);">
+    <div class="container">
+      <h2 style="text-align: center; margin-bottom: 0.5rem;">What You’ll <span class="highlight">Actually Achieve</span></h2>
+      <p style="text-align: center; font-size: 1.2rem; margin-bottom: 40px; color: #2b2b4b;">Real outcomes that matter for your future</p>
+      <div class="benefit-grid">
+        <div class="card" style="text-align: center;">
+          <i class="fas fa-microchip" style="font-size: 3rem; color: #560bad;"></i>
+          <p style="font-size: 1.4rem; font-weight: 700; margin-top: 10px;">Build real <span class="highlight">AI mini projects</span></p>
+        </div>
+        <div class="card" style="text-align: center;">
+          <i class="fas fa-comment-dots" style="font-size: 3rem; color: #3a0ca3;"></i>
+          <p style="font-size: 1.4rem; font-weight: 700; margin-top: 10px;">Understand <span class="highlight">ChatGPT & AI tools</span></p>
+        </div>
+        <div class="card" style="text-align: center;">
+          <i class="fas fa-rocket" style="font-size: 3rem; color: #4361ee;"></i>
+          <p style="font-size: 1.4rem; font-weight: 700; margin-top: 10px;">Boost your <span class="highlight">future career</span></p>
+        </div>
+        <div class="card" style="text-align: center;">
+          <i class="fas fa-star" style="font-size: 3rem; color: #f72585;"></i>
+          <p style="font-size: 1.4rem; font-weight: 700; margin-top: 10px;"><span class="highlight">Stand out</span> in school</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials" style="background: #f9faff;">
+    <div class="container">
+      <h2 style="text-align: center;">What students say</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin-top: 40px;">
+        <div class="card" style="max-width: 350px; flex: 1 1 280px;">
+          <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 12px;">
+            <i class="fas fa-circle-user" style="font-size: 3rem; color: #4a4e8c;"></i>
+            <div><strong style="font-size: 1.4rem;">Ahmed, 16</strong></div>
+          </div>
+          <p style="font-size: 1.2rem;">“This course made AI simple for me!”</p>
+          <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        </div>
+        <div class="card" style="max-width: 350px; flex: 1 1 280px;">
+          <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 12px;">
+            <i class="fas fa-circle-user" style="font-size: 3rem; color: #b270d6;"></i>
+            <div><strong style="font-size: 1.4rem;">Sarah, 17</strong></div>
+          </div>
+          <p style="font-size: 1.2rem;">“Best beginner AI course ever.”</p>
+          <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUARANTEE SECTION (conversion) -->
+  <section id="guarantee" style="background: #eef2ff; padding: 60px 0;">
+    <div class="container">
+      <div class="guarantee-card">
+        <div class="guarantee-icon"><i class="fas fa-shield-halved" aria-hidden="true"></i></div>
+        <div class="guarantee-text">
+          <h3>30‑Day Money‑Back Guarantee</h3>
+          <p>No questions asked. You risk nothing — if you're not satisfied, we refund every cent.</p>
+        </div>
+        <a href="#pricing" class="btn" style="background: #f72585; color:white; padding: 16px 48px; font-size:1.3rem;" aria-label="See pricing with guarantee">Get protected</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING SECTION -->
+  <section id="pricing" style="background: white;">
+    <div class="container">
+      <h2 style="text-align: center;">Start your journey today</h2>
+      <div class="pricing-wrapper">
+        <!-- basic plan -->
+        <div class="pricing-card">
+          <h3 style="font-weight: 600;">Basic Plan</h3>
+          <div class="price">$29 <small>/ one-time</small></div>
+          <ul style="list-style: none; margin: 20px 0 30px; text-align: left; font-size: 1.1rem;">
+            <li><i class="fas fa-check" style="color: #4895ef;"></i> 30 lessons</li>
+            <li><i class="fas fa-check" style="color: #4895ef;"></i> 3 mini projects</li>
+            <li><i class="fas fa-check" style="color: #4895ef;"></i> Certificate</li>
+            <li><i class="fas fa-check" style="color: #4895ef;"></i> Community access</li>
+          </ul>
+          <a href="#" class="btn pricing-btn modal-trigger" style="background: #3a0ca3; color: white;">Start My AI Journey</a>
+        </div>
+        <!-- pro plan (most popular) -->
+        <div class="pricing-card popular">
+          <div class="popular-badge">Most Popular</div>
+          <h3 style="font-weight: 600;">Pro Plan</h3>
+          <div class="price">$59 <small>/ one-time</small></div>
+          <ul style="list-style: none; margin: 20px 0 30px; text-align: left; font-size: 1.1rem;">
+            <li><i class="fas fa-check" style="color: #4895ef;"></i> 30 advanced lessons</li>
+            <li><i class="fas fa-check" style="color: #4895ef;"></i> 8 real‑world projects</li>
+            <li><i class="fas fa-check" style="color: #4895ef;"></i> Certificate + mentorship</li>
+            <li><i class="fas fa-check" style="color: #4895ef;"></i> AI tool mastery</li>
+          </ul>
+          <a href="#" class="btn pricing-btn modal-trigger" style="background: #4cc9f0; color: #0b0b2b;">Join the Next Cohort</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER with anchor links -->
+  <footer class="footer">
+    <div class="container" style="text-align: center;">
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#hero">Home</a>
+        <a href="#problem">Problem</a>
+        <a href="#solution">Solution</a>
+        <a href="#benefits">Benefits</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#pricing">Pricing</a>
+      </nav>
+      <p style="font-size: 1.2rem;"><i class="fas fa-envelope" style="margin-right: 8px;"></i> hello@aifutures.education</p>
+      <div class="social-icons">
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+        <a href="#" aria-label="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+      </div>
+      <p style="border-top: 1px solid #32325c; padding-top: 25px; margin-top: 25px; font-size: 0.9rem;">&copy; 2025 AI Futures. All rights reserved. — Designed for students 14‑18</p>
+    </div>
+  </footer>
+
+  <!-- MODAL (signup/login) with accessibility improvements -->
+  <div id="signupModal" class="modal" role="dialog" aria-modal="true" aria-label="Sign up or log in to reserve your seat">
+    <div class="modal-content">
+      <button class="close-modal" aria-label="Close modal">&times;</button>
+      <div class="tab-buttons" role="tablist">
+        <button class="tab-btn active" id="tabSignupBtn" role="tab" aria-selected="true" aria-controls="signupPane">Sign up</button>
+        <button class="tab-btn" id="tabLoginBtn" role="tab" aria-selected="false" aria-controls="loginPane">Log in</button>
+      </div>
+      <div id="signupPane" class="tab-pane active" role="tabpanel" aria-labelledby="tabSignupBtn">
+        <div class="input-group">
+          <label for="signup-name">Full name</label>
+          <input type="text" id="signup-name" placeholder="Alex Johnson">
+        </div>
+        <div class="input-group">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" placeholder="student@example.com">
+        </div>
+        <div class="input-group">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="••••••••">
+        </div>
+        <button class="modal-btn" aria-label="Create new account">Create account</button>
+        <p class="switch-text">Already have an account? <span id="switchToLogin" role="button" tabindex="0" aria-label="Switch to login">Log in</span></p>
+      </div>
+      <div id="loginPane" class="tab-pane" role="tabpanel" aria-labelledby="tabLoginBtn">
+        <div class="input-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="student@example.com">
+        </div>
+        <div class="input-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="••••••••">
+        </div>
+        <button class="modal-btn" aria-label="Log in to your account">Log in</button>
+        <p class="switch-text">Don't have an account? <span id="switchToSignup" role="button" tabindex="0" aria-label="Switch to signup">Sign up</span></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ========== COUNTDOWN with real cohort date ==========
+      const targetDate = new Date("2025-03-15T23:59:59"); // March 15, 2025 end of day
+
+      function updateTimer() {
+        const now = new Date();
+        const diff = targetDate - now;
+        if (diff <= 0) {
+          document.getElementById('days').innerText = '00';
+          document.getElementById('hours').innerText = '00';
+          document.getElementById('minutes').innerText = '00';
+          document.getElementById('seconds').innerText = '00';
+          return;
+        }
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        document.getElementById('days').innerText = days.toString().padStart(2, '0');
+        document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+        document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+        document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+      }
+      updateTimer();
+      setInterval(updateTimer, 1000);
+
+      // ========== MODAL with focus trap and ESC ==========
+      const modal = document.getElementById('signupModal');
+      const closeBtn = document.querySelector('.close-modal');
+      const modalTriggers = document.querySelectorAll('.modal-trigger');
+
+      const tabSignup = document.getElementById('tabSignupBtn');
+      const tabLogin = document.getElementById('tabLoginBtn');
+      const paneSignup = document.getElementById('signupPane');
+      const paneLogin = document.getElementById('loginPane');
+      const switchToLogin = document.getElementById('switchToLogin');
+      const switchToSignup = document.getElementById('switchToSignup');
+
+      // focusable elements inside modal
+      let focusableElements = [];
+      let firstFocusable = null;
+      let lastFocusable = null;
+
+      function updateFocusable() {
+        focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusableElements.length > 0) {
+          firstFocusable = focusableElements[0];
+          lastFocusable = focusableElements[focusableElements.length - 1];
+        }
+      }
+
+      function openModal(e) {
+        e.preventDefault();
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+        updateFocusable();
+        if (firstFocusable) firstFocusable.focus();
+        // trap focus
+        document.addEventListener('keydown', trapFocus);
+        // esc key
+        document.addEventListener('keydown', escClose);
+      }
+
+      function closeModal() {
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+        document.removeEventListener('keydown', trapFocus);
+        document.removeEventListener('keydown', escClose);
+      }
+
+      function trapFocus(e) {
+        if (!modal.classList.contains('show')) return;
+        if (e.key === 'Tab') {
+          if (e.shiftKey) {
+            if (document.activeElement === firstFocusable) {
+              e.preventDefault();
+              lastFocusable.focus();
+            }
+          } else {
+            if (document.activeElement === lastFocusable) {
+              e.preventDefault();
+              firstFocusable.focus();
+            }
+          }
+        }
+      }
+
+      function escClose(e) {
+        if (e.key === 'Escape' && modal.classList.contains('show')) {
+          closeModal();
+        }
+      }
+
+      modalTriggers.forEach(btn => btn.addEventListener('click', openModal));
+      closeBtn.addEventListener('click', closeModal);
+      window.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      // Tab switching
+      function setActiveTab(tab) {
+        if (tab === 'signup') {
+          tabSignup.classList.add('active');
+          tabSignup.setAttribute('aria-selected', 'true');
+          tabLogin.classList.remove('active');
+          tabLogin.setAttribute('aria-selected', 'false');
+          paneSignup.classList.add('active');
+          paneLogin.classList.remove('active');
+        } else {
+          tabLogin.classList.add('active');
+          tabLogin.setAttribute('aria-selected', 'true');
+          tabSignup.classList.remove('active');
+          tabSignup.setAttribute('aria-selected', 'false');
+          paneLogin.classList.add('active');
+          paneSignup.classList.remove('active');
+        }
+        updateFocusable(); // after switching, focusable elements change
+      }
+
+      tabSignup.addEventListener('click', () => setActiveTab('signup'));
+      tabLogin.addEventListener('click', () => setActiveTab('login'));
+      switchToLogin.addEventListener('click', (e) => { e.preventDefault(); setActiveTab('login'); });
+      switchToSignup.addEventListener('click', (e) => { e.preventDefault(); setActiveTab('signup'); });
+      // make spans keyboard accessible
+      switchToLogin.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveTab('login'); } });
+      switchToSignup.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveTab('signup'); } });
+
+      // ========== SCROLL FADE-IN (IntersectionObserver) ==========
+      const sections = document.querySelectorAll('section');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.2 });
+      sections.forEach(section => observer.observe(section));
+    })();
+  </script>
+</body>
+</html>
